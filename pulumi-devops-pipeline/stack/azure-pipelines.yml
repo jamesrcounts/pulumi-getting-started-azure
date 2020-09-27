@@ -9,6 +9,8 @@ pr:
 
 stages:
   - stage: Build
+    variables:
+      - group: pulumi-access-token
     jobs: 
       - job: Preview
 
