@@ -16,18 +16,10 @@ stages:
           vmImage: 'ubuntu-latest'
 
         steps:
-        - script: echo Hello, world! Test
-          displayName: 'Run a one-line script'
-
-        - script: |
-            echo Add other tasks to build, test, and deploy your project.
-            echo See https://aka.ms/yaml
-          displayName: 'Run a multi-line script'
-
-        - script: exit 0
-          displayName: 'Fixed this task'
-
-        - script: |
-            echo 'Fixed it!'
-            exit 0
-          displayName: 'New task'
+          - task: Pulumi@1
+            condition: or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))
+            inputs:
+              azureSubscription: "My Service Connection"
+              command: "preview"
+              cwd: "pulumi-devops-pipeline/stack"
+              stack: "jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev"
