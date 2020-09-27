@@ -13,6 +13,13 @@ class MyStack : Stack
         var resourceGroup = new ResourceGroup($"rg-{suffix}");
         CreateVirtualNetwork(suffix, resourceGroup);
 
+        var publicip = new PublicIp($"pip-{suffix}", new PublicIpArgs { 
+            ResourceGroupName = resourceGroup.Name,
+            AllocationMethod = "Static",
+        });
+
+
+
         // Create an Azure Storage Account
         var storageAccount = new Account("storage", new AccountArgs
         {
