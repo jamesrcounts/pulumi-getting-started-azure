@@ -19,7 +19,7 @@ stages:
           - task: Pulumi@1
             condition: or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))
             inputs:
-              azureSubscription: 'My Service Connection'
+              azureSubscription: 'Azure - Personal'
               command: 'preview'
               cwd: 'pulumi-devops-pipeline/stack'
               stack: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev'
