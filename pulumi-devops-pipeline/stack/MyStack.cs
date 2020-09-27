@@ -17,6 +17,13 @@ class MyStack : Stack
             ResourceGroupName = resourceGroup.Name
         });
 
+        var subnet = new Subnet("pulumi", new SubnetArgs
+        {
+            ResourceGroupName= resourceGroup.Name,
+            VirtualNetworkName = virtualNetwork.Name,
+            AddressPrefix = "10.0.1.0/24"
+        });
+
         // Create an Azure Storage Account
         var storageAccount = new Account("storage", new AccountArgs
         {
