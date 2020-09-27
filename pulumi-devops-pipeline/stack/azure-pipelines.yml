@@ -26,5 +26,6 @@ stages:
             inputs:
               azureSubscription: 'Azure - Personal'
               command: 'preview'
+              args: '--diff --refresh --color=always --non-interactive'
               cwd: 'pulumi-devops-pipeline/stack'
               stack: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev'
