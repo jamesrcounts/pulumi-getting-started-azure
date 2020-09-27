@@ -20,12 +20,12 @@ stages:
         steps:
           - checkout: self
             fetchDepth: 1
-            
+
           - task: Pulumi@1
             condition: or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))
             inputs:
               azureSubscription: 'Azure - Personal'
               command: 'preview'
-              args: '--diff --refresh --color=always --non-interactive'
+              args: '--diff --refresh --non-interactive'
               cwd: 'pulumi-devops-pipeline/stack'
               stack: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev'
