@@ -1,5 +1,6 @@
 using Pulumi;
 using Pulumi.Azure.Core;
+using Pulumi.Azure.Network;
 using Pulumi.Azure.Storage;
 
 class MyStack : Stack
@@ -7,7 +8,14 @@ class MyStack : Stack
     public MyStack()
     {
         // Create an Azure Resource Group
-        var resourceGroup = new ResourceGroup("resourceGroup");
+        var resourceGroup = new ResourceGroup("pulumi-devops");
+
+        // Create Virtual Network
+        var virtualNetwork = new VirtualNetwork("pulumi", new VirtualNetworkArgs
+        {
+            AddressSpaces = { "10.0.0.0/16" },
+            ResourceGroupName = resourceGroup.Name
+        });
 
         // Create an Azure Storage Account
         var storageAccount = new Account("storage", new AccountArgs
