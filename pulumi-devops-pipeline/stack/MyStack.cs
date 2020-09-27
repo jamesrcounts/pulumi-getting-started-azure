@@ -11,9 +11,7 @@ class MyStack : Stack
 
         // Create an Azure Resource Group
         var resourceGroup = new ResourceGroup($"rg-{suffix}");
-
-        // Create Virtual Network
-        CreateNetwork(suffix, resourceGroup);
+        CreateVirtualNetwork(suffix, resourceGroup);
 
         // Create an Azure Storage Account
         var storageAccount = new Account("storage", new AccountArgs
@@ -27,7 +25,7 @@ class MyStack : Stack
         this.ConnectionString = storageAccount.PrimaryConnectionString;
     }
 
-    private static void CreateNetwork(string suffix, ResourceGroup resourceGroup)
+    private static void CreateVirtualNetwork(string suffix, ResourceGroup resourceGroup)
     {
         var virtualNetwork = new VirtualNetwork($"vnet-{suffix}", new VirtualNetworkArgs
         {
