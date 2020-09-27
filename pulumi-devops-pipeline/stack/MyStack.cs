@@ -7,21 +7,40 @@ class MyStack : Stack
 {
     public MyStack()
     {
+        var suffix = "pulumi-devops";
+
         // Create an Azure Resource Group
-        var resourceGroup = new ResourceGroup("pulumi-devops");
+        var resourceGroup = new ResourceGroup($"rg-{suffix}");
 
         // Create Virtual Network
-        var virtualNetwork = new VirtualNetwork("pulumi", new VirtualNetworkArgs
+        var virtualNetwork = new VirtualNetwork($"vnet-{suffix}", new VirtualNetworkArgs
         {
             AddressSpaces = { "10.0.0.0/16" },
             ResourceGroupName = resourceGroup.Name
         });
 
-        var subnet = new Subnet("pulumi", new SubnetArgs
+        var subnet = new Subnet("apps", new SubnetArgs
         {
             ResourceGroupName= resourceGroup.Name,
             VirtualNetworkName = virtualNetwork.Name,
             AddressPrefix = "10.0.1.0/24"
+        });
+
+        var nsg = new NetworkSecurityGroup($"nsg-{suffix}", new NetworkSecurityGroupArgs {
+            ResourceGroupName = resourceGroup.Name,
+         });
+
+        var nsgSshAllowInbound = new NetworkSecurityRule("ssh-allow-inbound", new NetworkSecurityRuleArgs
+        {
+            Priority = 1001,
+            Direction = "Inbound",
+            Access = "Allow",
+            Protocol = "Tcp",
+            SourcePortRange = "*",
+            DestinationPortRange = "22",
+            SourceAddressPrefix = "*",
+            DestinationAddressPrefix = "*",
+            NetworkSecurityGroupName = nsg.Name,
         });
 
         // Create an Azure Storage Account
