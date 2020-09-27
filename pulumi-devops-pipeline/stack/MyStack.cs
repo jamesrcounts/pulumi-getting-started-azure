@@ -21,14 +21,17 @@ class MyStack : Stack
 
         var subnet = new Subnet("apps", new SubnetArgs
         {
-            ResourceGroupName= resourceGroup.Name,
+            ResourceGroupName = resourceGroup.Name,
             VirtualNetworkName = virtualNetwork.Name,
-            AddressPrefix = "10.0.1.0/24"
+            AddressPrefixes = {
+                "10.0.1.0/24",
+            }
         });
 
-        var nsg = new NetworkSecurityGroup($"nsg-{suffix}", new NetworkSecurityGroupArgs {
+        var nsg = new NetworkSecurityGroup($"nsg-{suffix}", new NetworkSecurityGroupArgs
+        {
             ResourceGroupName = resourceGroup.Name,
-         });
+        });
 
         var nsgSshAllowInbound = new NetworkSecurityRule("ssh-allow-inbound", new NetworkSecurityRuleArgs
         {
@@ -41,6 +44,7 @@ class MyStack : Stack
             SourceAddressPrefix = "*",
             DestinationAddressPrefix = "*",
             NetworkSecurityGroupName = nsg.Name,
+            ResourceGroupName = resourceGroup.Name,
         });
 
         // Create an Azure Storage Account
