@@ -26,6 +26,6 @@ steps:
   displayName: 'Fixed this task'
 
 - script: |
-    echo 'Oh noes another failing task'
-    exit 1
-  displayName: 'New failing task'
+    echo 'Fixed it!'
+    exit 0
+  displayName: 'New task'
