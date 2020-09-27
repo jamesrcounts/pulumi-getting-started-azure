@@ -22,6 +22,7 @@ stages:
             fetchDepth: 1
 
           - task: Pulumi@1
+            displayName: 'Preview Infrastructure Changes'
             condition: or(eq(variables['Build.Reason'], 'PullRequest'), eq(variables['Build.Reason'], 'Manual'))
             inputs:
               azureSubscription: 'Azure - Personal'
