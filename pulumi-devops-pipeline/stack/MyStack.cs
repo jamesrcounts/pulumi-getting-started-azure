@@ -2,6 +2,7 @@ using Pulumi;
 using Pulumi.Azure.Core;
 using Pulumi.Azure.Network;
 using Pulumi.Azure.Storage;
+using Pulumi.Azure.Network.Inputs;
 
 class MyStack : Stack
 {
@@ -11,14 +12,34 @@ class MyStack : Stack
 
         // Create an Azure Resource Group
         var resourceGroup = new ResourceGroup($"rg-{suffix}");
-        CreateVirtualNetwork(suffix, resourceGroup);
+        var network = CreateVirtualNetwork(suffix, resourceGroup);
 
-        var publicip = new PublicIp($"pip-{suffix}", new PublicIpArgs { 
+        var publicip = new PublicIp($"pip-{suffix}", new PublicIpArgs
+        {
             ResourceGroupName = resourceGroup.Name,
             AllocationMethod = "Static",
         });
 
+        var nic = new NetworkInterface($"nic-{suffix}", new NetworkInterfaceArgs
+        {
+            ResourceGroupName = resourceGroup.Name,
+            IpConfigurations = 
+            {
+                new NetworkInterfaceIpConfigurationArgs
+                {
+                    Name = "nic-pip-association",
+                    SubnetId = network.SubnetId,
+                    PrivateIpAddressAllocation = "Dynamic",
+                    PublicIpAddressId = publicip.Id,
+                },
+            },
+        });
 
+        var nicNsgAssociation = new NetworkInterfaceSecurityGroupAssociation($"nic-to-nsg-{suffix}", new NetworkInterfaceSecurityGroupAssociationArgs
+        {
+            NetworkInterfaceId = nic.Id,
+            NetworkSecurityGroupId = network.NetworkSecurityGroupId
+        });
 
         // Create an Azure Storage Account
         var storageAccount = new Account("storage", new AccountArgs
@@ -32,7 +53,7 @@ class MyStack : Stack
         this.ConnectionString = storageAccount.PrimaryConnectionString;
     }
 
-    private static void CreateVirtualNetwork(string suffix, ResourceGroup resourceGroup)
+    private static CreateVirtualNetworkResult CreateVirtualNetwork(string suffix, ResourceGroup resourceGroup)
     {
         var virtualNetwork = new VirtualNetwork($"vnet-{suffix}", new VirtualNetworkArgs
         {
@@ -67,7 +88,15 @@ class MyStack : Stack
             NetworkSecurityGroupName = nsg.Name,
             ResourceGroupName = resourceGroup.Name,
         });
+
+        return new CreateVirtualNetworkResult
+        {
+            NetworkSecurityGroupId = nsg.Id,
+            SubnetId = subnet.Id
+        };
     }
+
+
 
     [Output]
     public Output<string> ConnectionString { get; set; }
