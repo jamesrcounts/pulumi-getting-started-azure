@@ -15,7 +15,11 @@ class MyStack : Stack
         // Create an Azure Resource Group
         var resourceGroup = new ResourceGroup($"rg-{suffix}");
         var network = CreateVirtualNetwork(suffix, resourceGroup);
+        CreateVirtualMachine(suffix, resourceGroup, network);
+    }
 
+    private static void CreateVirtualMachine(string suffix, ResourceGroup resourceGroup, CreateVirtualNetworkResult network)
+    {
         var publicip = new PublicIp($"pip-{suffix}", new PublicIpArgs
         {
             ResourceGroupName = resourceGroup.Name,
@@ -25,7 +29,7 @@ class MyStack : Stack
         var nic = new NetworkInterface($"nic-{suffix}", new NetworkInterfaceArgs
         {
             ResourceGroupName = resourceGroup.Name,
-            IpConfigurations = 
+            IpConfigurations =
             {
                 new NetworkInterfaceIpConfigurationArgs
                 {
@@ -43,26 +47,29 @@ class MyStack : Stack
             NetworkSecurityGroupId = network.NetworkSecurityGroupId
         });
 
-        var vm = new LinuxVirtualMachine($"vm-{suffix}", new LinuxVirtualMachineArgs{
+        var vm = new LinuxVirtualMachine($"vm-{suffix}", new LinuxVirtualMachineArgs
+        {
             ResourceGroupName = resourceGroup.Name,
             NetworkInterfaceIds = { nic.Id },
             Size = "Standard_DS1_v2",
             ComputerName = $"vm-{suffix}",
             AdminUsername = "plankton",
             AdminPassword = "password1234!",
-            DisablePasswordAuthentication  = false,
-            OsDisk = new LinuxVirtualMachineOsDiskArgs{
+            DisablePasswordAuthentication = false,
+            OsDisk = new LinuxVirtualMachineOsDiskArgs
+            {
                 Name = "disk0",
                 Caching = "ReadWrite",
                 StorageAccountType = "Premium_LRS"
             },
-            SourceImageReference = new LinuxVirtualMachineSourceImageReferenceArgs{
+            SourceImageReference = new LinuxVirtualMachineSourceImageReferenceArgs
+            {
                 Publisher = "Canonical",
                 Offer = "UbuntuServer",
                 Sku = "20.04.0-LTS",
                 Version = "latest",
             },
-        
+
         });
     }
 
