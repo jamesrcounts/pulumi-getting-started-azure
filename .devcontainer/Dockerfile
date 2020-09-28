@@ -39,6 +39,7 @@ RUN if [ "${INSTALL_AZURE_CLI}" = "true" ]; then bash /tmp/library-scripts/azcli
 USER ${USERNAME}:${USER_GID}
 RUN bash /tmp/library-scripts/pulumi-debian.sh 
 ENV PATH="/home/${USERNAME}/.pulumi/bin:${PATH}"
+RUN echo 'alias bc="git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done"' >> ~/.bashrc
 
 USER root
 ENTRYPOINT [ "/usr/local/share/docker-init.sh" ]
