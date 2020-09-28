@@ -3,6 +3,8 @@ using Pulumi.Azure.Core;
 using Pulumi.Azure.Network;
 using Pulumi.Azure.Storage;
 using Pulumi.Azure.Network.Inputs;
+using Pulumi.Azure.Compute;
+using Pulumi.Azure.Compute.Inputs;
 
 class MyStack : Stack
 {
@@ -41,16 +43,27 @@ class MyStack : Stack
             NetworkSecurityGroupId = network.NetworkSecurityGroupId
         });
 
-        // Create an Azure Storage Account
-        var storageAccount = new Account("storage", new AccountArgs
-        {
+        var vm = new LinuxVirtualMachine($"vm-{suffix}", new LinuxVirtualMachineArgs{
             ResourceGroupName = resourceGroup.Name,
-            AccountReplicationType = "LRS",
-            AccountTier = "Standard"
+            NetworkInterfaceIds = { nic.Id },
+            Size = "Standard_DS1_v2",
+            ComputerName = $"vm-{suffix}",
+            AdminUsername = "plankton",
+            AdminPassword = "password1234!",
+            DisablePasswordAuthentication  = false,
+            OsDisk = new LinuxVirtualMachineOsDiskArgs{
+                Name = "disk0",
+                Caching = "ReadWrite",
+                StorageAccountType = "Premium_LRS"
+            },
+            SourceImageReference = new LinuxVirtualMachineSourceImageReferenceArgs{
+                Publisher = "Canonical",
+                Offer = "UbuntuServer",
+                Sku = "20.04.0-LTS",
+                Version = "latest",
+            },
+        
         });
-
-        // Export the connection string for the storage account
-        this.ConnectionString = storageAccount.PrimaryConnectionString;
     }
 
     private static CreateVirtualNetworkResult CreateVirtualNetwork(string suffix, ResourceGroup resourceGroup)
@@ -95,9 +108,4 @@ class MyStack : Stack
             SubnetId = subnet.Id
         };
     }
-
-
-
-    [Output]
-    public Output<string> ConnectionString { get; set; }
 }
