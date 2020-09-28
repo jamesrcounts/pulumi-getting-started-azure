@@ -14,8 +14,6 @@ variables:
   - group: pulumi-access-token
   - name: azure-subscription
     value: 'Azure - Personal'
-  - name: manual-deploy
-    value: false
   - name: stack-name
     value: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev'
   - name: working-directory
