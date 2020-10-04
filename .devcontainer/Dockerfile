@@ -37,7 +37,8 @@ USER ${USERNAME}:${USER_GID}
 COPY library-scripts/pulumi-debian.sh /tmp/library-scripts/
 RUN bash /tmp/library-scripts/pulumi-debian.sh 
 ENV PATH="/home/${USERNAME}/.pulumi/bin:${PATH}"
-RUN echo 'alias bc="git fetch -p && for branch in $(git branch -vv | grep ': gone]' | awk '{print $1}'); do git branch -D $branch; done"' >> ~/.bashrc
+RUN pulumi plugin install resource azure v3.23.0
+RUN git config --global gpg.program `which gpg`
 
 COPY library-scripts/*.sh /tmp/library-scripts/
 
