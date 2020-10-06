@@ -1,0 +1,47 @@
+name: 1.0.$(Rev:r)
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+
+pr:
+  - main
+  - development
+
+variables:
+  - group: pulumi-access-token
+  - name: azure-subscription
+    value: 'Azure - Personal'
+  - name: stack-name
+    value: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev'
+  - name: working-directory
+    value: 'pulumi-devops-pipeline/stack'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - checkout: self
+    fetchDepth: 1
+
+  - task: Pulumi@1
+    displayName: 'Preview Infrastructure Changes'
+    condition: or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true)))
+    inputs:
+      azureSubscription: $(azure-subscription)
+      command: 'preview'
+      args: '--diff --refresh --non-interactive'
+      cwd: $(working-directory)
+      stack: $(stack-name)
+
+  - task: Pulumi@1
+    displayName: 'Deploy Infrastructure Changes'
+    condition: or(or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'BatchedCI')),and(eq(variables['Build.Reason'], 'Manual'),eq(variables['manual-deploy'], true)))
+    inputs:
+      azureSubscription: $(azure-subscription)
+      command: 'up'
+      args: '--yes --diff --refresh --non-interactive --skip-preview'
+      cwd: $(working-directory)
+      stack: $(stack-name)
