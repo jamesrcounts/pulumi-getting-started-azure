@@ -40,5 +40,7 @@ Use an Azure Storage account to store the stack file instead of app.pulumi.com.
          2. Add AZURE_STORAGE_ACCOUNT variable (not secret) with name of the account.
          3. Update pipeline YAML and allow pipeline to use the vairable group
       2. Without the API key, Pulumi doesn't know how to login yet.  Add a script/task to create and set the SAS token.
+         1. Update `pulumi-azure-backend` variable group to include AZURE_STORAGE_CONTAINER with the name of the container inside the storage account.
+         2. Add AZURE_STORAGE_AUTH_MODE=login to the group
 
 ## Interesting Take-aways
