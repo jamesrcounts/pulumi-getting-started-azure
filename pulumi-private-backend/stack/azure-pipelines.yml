@@ -33,18 +33,20 @@ steps:
     displayName: 'Preview Infrastructure Changes'
     condition: or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true)))
     inputs:
-      azureSubscription: $(azure-subscription)
+      azureSubscription: '$(azure-subscription)'
       command: 'preview'
       args: '--diff --refresh --non-interactive'
-      cwd: $(working-directory)
-      stack: $(stack-name)
+      cwd: '$(working-directory)'
+      stack: '$(stack-name)'
+      createStack: true
 
   - task: Pulumi@1
     displayName: 'Deploy Infrastructure Changes'
     condition: or(or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'BatchedCI')),and(eq(variables['Build.Reason'], 'Manual'),eq(variables['manual-deploy'], true)))
     inputs:
-      azureSubscription: $(azure-subscription)
+      azureSubscription: '$(azure-subscription)'
       command: 'up'
       args: '--yes --diff --refresh --non-interactive --skip-preview'
-      cwd: $(working-directory)
-      stack: $(stack-name)
+      cwd: '$(working-directory)'
+      stack: '$(stack-name)'
+      createStack: true
