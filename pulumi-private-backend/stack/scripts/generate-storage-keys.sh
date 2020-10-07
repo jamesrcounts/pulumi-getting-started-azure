@@ -19,4 +19,4 @@ TOKEN=$(
 )
 
 # Set the token as a pipeline variable for other steps to use.
-echo "##vso[task.setvariable variable=storage-key;isSecret=true;isOutput=true]${TOKEN}"
+echo "##vso[task.setvariable variable=STORAGE_KEY;isSecret=true;isOutput=true]${TOKEN}"
