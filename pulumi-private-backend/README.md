@@ -19,6 +19,6 @@ Use an Azure Storage account to store the stack file instead of app.pulumi.com.
 ## Steps
 
 1. Same setup as the pipelines example.
-2. 
+2. Create a storage account in Azure.
 
 ## Interesting Take-aways
