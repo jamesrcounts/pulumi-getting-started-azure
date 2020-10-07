@@ -49,7 +49,7 @@ steps:
         set -e -x
 
         # Download and install pulumi
-        curl -fsSL https://get.pulumi.com/ | bash
+        curl -fsSL https://get.pulumi.com/ | bash -s -- --silent
         export PATH=$HOME/.pulumi/bin:$PATH
 
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT and 
