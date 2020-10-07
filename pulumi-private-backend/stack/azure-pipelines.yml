@@ -37,9 +37,11 @@ steps:
       scriptLocation: 'scriptPath'
       scriptPath: '$(working-directory)/scripts/generate-storage-keys.sh'
       failOnStandardError: true
-      
+
   - task: Bash@3
-    displayName: 'Pulumi Setup'
+    displayName: 'Pulumi Run'
+    env:
+      AZURE_STORAGE_SAS_TOKEN: $(STORAGE_KEY)
     inputs:
       targetType: 'inline'
       script: |
@@ -52,18 +54,6 @@ steps:
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT
         # environment variable.
         pulumi login -c azblob://${AZURE_STORAGE_CONTAINER}
-      failOnStderr: false
-
-  - task: Bash@3
-    displayName: 'Pulumi Run'
-    env:
-      AZURE_STORAGE_SAS_TOKEN: $(STORAGE_KEY)
-    inputs:
-      targetType: 'inline'
-      script: |
-        set -e -x
-
-        export PATH=$HOME/.pulumi/bin:$PATH
 
         pulumi stack select $(stack-name)
       failOnStderr: false
