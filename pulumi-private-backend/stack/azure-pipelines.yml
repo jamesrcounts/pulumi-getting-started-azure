@@ -53,9 +53,11 @@ steps:
 
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT
         # environment variable.
-        pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} -v=4
+        pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} 
+        echo ${AZURE_STORAGE_SAS_TOKEN}
+        echo ${STORAGE_KEY}
 
-        pulumi stack select $(stack-name) -v=4
+        pulumi stack select $(stack-name)
       failOnStderr: false
 
   - task: Pulumi@1
