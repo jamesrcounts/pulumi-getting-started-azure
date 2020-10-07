@@ -50,7 +50,7 @@ steps:
 
         # Download and install pulumi
         curl -fsSL https://get.pulumi.com/ | bash
-        export PATH=$PATH:$HOME/.pulumi/bin
+        export PATH=$HOME/.pulumi/bin:$PATH
 
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT and 
         # AZURE_STORAGE_SAS_TOKEN environment variables
