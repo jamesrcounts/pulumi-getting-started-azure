@@ -14,6 +14,7 @@ TOKEN=$(
         --expiry ${TOKEN_EXPIRATION} \
         --permissions rw \
         --https-only \
+        --as-user \
         --output tsv
 )
 
