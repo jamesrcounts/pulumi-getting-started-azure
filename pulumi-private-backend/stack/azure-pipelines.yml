@@ -40,7 +40,7 @@ steps:
 
   - task: Pulumi@1
     displayName: 'Preview Infrastructure Changes'
-    condition: or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true)))
+    condition: and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true))))
     inputs:
       azureSubscription: '$(azure-subscription)'
       command: 'preview'
@@ -51,7 +51,7 @@ steps:
 
   - task: Pulumi@1
     displayName: 'Deploy Infrastructure Changes'
-    condition: or(or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'BatchedCI')),and(eq(variables['Build.Reason'], 'Manual'),eq(variables['manual-deploy'], true)))
+    condition: and(succeeded(), or(or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'BatchedCI')),and(eq(variables['Build.Reason'], 'Manual'),eq(variables['manual-deploy'], true))))
     inputs:
       azureSubscription: '$(azure-subscription)'
       command: 'up'
