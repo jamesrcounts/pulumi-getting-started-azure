@@ -29,6 +29,15 @@ steps:
   - checkout: self
     fetchDepth: 1
 
+  - task: AzureCLI@2
+    displayName: 'Generate Storage Key'
+    inputs:
+      azureSubscription: 'Azure - Personal'
+      scriptType: 'bash'
+      scriptLocation: 'scriptPath'
+      scriptPath: './scripts/generate-storage-keys.sh'
+      failOnStandardError: true
+
   - task: Pulumi@1
     displayName: 'Preview Infrastructure Changes'
     condition: or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true)))
