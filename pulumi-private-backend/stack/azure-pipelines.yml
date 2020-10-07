@@ -46,6 +46,7 @@ steps:
     inputs:
       azureSubscription: '$(azure-subscription)'
       command: 'preview'
+      loginArgs: '--cloud-url azblob://$(AZURE_STORAGE_CONTAINER)'
       args: '--diff --refresh --non-interactive'
       cwd: '$(working-directory)'
       stack: '$(stack-name)'
