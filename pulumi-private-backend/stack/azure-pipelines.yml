@@ -49,13 +49,13 @@ steps:
         set -e -x
 
         # Download and install pulumi
-        curl -fsSL https://get.pulumi.com/ | bash -s -- --silent
+        curl -fsSL https://get.pulumi.com/ | bash 
         export PATH=$HOME/.pulumi/bin:$PATH
 
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT and 
         # AZURE_STORAGE_SAS_TOKEN environment variables
         pulumi login -c azblob://${AZURE_STORAGE_CONTAINER}
-      failOnStderr: true
+      failOnStderr: false
 
   - task: Pulumi@1
     displayName: 'Preview Infrastructure Changes'
