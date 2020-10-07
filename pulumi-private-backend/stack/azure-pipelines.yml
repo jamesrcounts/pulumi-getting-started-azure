@@ -5,6 +5,9 @@ trigger:
   branches:
     include:
       - main
+  paths:
+    include:
+      - 'pulumi-private-backend/stack'
 
 pr:
   - main
@@ -15,9 +18,9 @@ variables:
   - name: azure-subscription
     value: 'Azure - Personal'
   - name: stack-name
-    value: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-devopspipeline-dev'
+    value: 'jamesrcounts/AzureCSharp.DevOpsPipeline/azcs-privatebackend-dev'
   - name: working-directory
-    value: 'pulumi-devops-pipeline/stack'
+    value: 'pulumi-private-backend/stack'
 
 pool:
   vmImage: 'ubuntu-latest'
