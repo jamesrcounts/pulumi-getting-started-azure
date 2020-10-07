@@ -35,7 +35,7 @@ steps:
       azureSubscription: 'Azure - Personal'
       scriptType: 'bash'
       scriptLocation: 'scriptPath'
-      scriptPath: './scripts/generate-storage-keys.sh'
+      scriptPath: '$(working-directory)/scripts/generate-storage-keys.sh'
       failOnStandardError: true
 
   - task: Pulumi@1
