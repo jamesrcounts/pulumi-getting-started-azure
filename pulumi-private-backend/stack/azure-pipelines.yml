@@ -42,7 +42,7 @@ steps:
     displayName: 'Preview Infrastructure Changes'
     condition: and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true))))
     env:
-      AZURE_STORAGE_SAS_TOKEN: $(STORAGE_KEY)
+      AZURE_STORAGE_SAS_TOKEN: STORAGE_KEY
     inputs:
       azureSubscription: '$(azure-subscription)'
       command: 'preview'
