@@ -46,17 +46,17 @@ steps:
       targetType: 'inline'
       script: |
         set -e -x
-
+        
         # Download and install pulumi
         curl -fsSL https://get.pulumi.com/ | bash 
         export PATH=$HOME/.pulumi/bin:$PATH
-
+        
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT
         # environment variable.
         pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} 
-
+        
         pulumi stack select $(stack-name)
-      failOnStderr: false
+      workingDirectory: '$(working-directory)'
 
   - task: Pulumi@1
     displayName: 'Preview Infrastructure Changes'
