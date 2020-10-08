@@ -39,6 +39,16 @@ steps:
       failOnStandardError: true
 
   - task: AzureCLI@2
+    displayName: 'Environment Setup'
+    inputs:
+      azureSubscription: 'Azure - Personal'
+      scriptType: 'bash'
+      scriptLocation: 'scriptPath'
+      scriptPath: '$(working-directory)/scripts/environment-setup.sh'
+      addSpnToEnvironment: true
+      failOnStandardError: true
+  
+  - task: AzureCLI@2
     displayName: 'Pulumi Run'
     env:
       AZURE_STORAGE_SAS_TOKEN: $(AZURE_STORAGE_TOKEN)
