@@ -75,7 +75,7 @@ steps:
         COMMON_ARGS="--diff --refresh --non-interactive"
         if [ "${BUILD_REASON}" = "PullRequest" ] || { [ "${BUILD_REASON}" = "Manual" ] && [ "${MANUAL_DEPLOY}" != "true" ]; }; then
             pulumi preview ${COMMON_ARGS}
-        elif [ "${BUILD_REASON}" = "IndividualCI" ] || [ "${BUILD_REASON}" = "BatchedCI" ] || { [ "${BUILD_REASON}" = "Manual" ] && [ "${MANUAL_DEPLOY}" != "true" ]; }; then
+        elif [ "${BUILD_REASON}" = "IndividualCI" ] || [ "${BUILD_REASON}" = "BatchedCI" ] || { [ "${BUILD_REASON}" = "Manual" ] && [ "${MANUAL_DEPLOY}" = "true" ]; }; then
             pulumi up --yes --skip-preview ${COMMON_ARGS}
         fi
       workingDirectory: '$(working-directory)'
