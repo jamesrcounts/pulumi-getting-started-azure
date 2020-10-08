@@ -12,7 +12,7 @@ TOKEN=$(
         --account-name ${AZURE_STORAGE_ACCOUNT} \
         --name ${AZURE_STORAGE_CONTAINER} \
         --expiry ${TOKEN_EXPIRATION} \
-        --permissions rw \
+        --permissions rwdl \
         --https-only \
         --as-user \
         --output tsv
