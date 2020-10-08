@@ -10,13 +10,11 @@ TOKEN_EXPIRATION=$(date -u -d "1 hour" '+%Y-%m-%dT%H:%MZ')
 TOKEN=$(
     az storage account generate-sas \
         --account-name ${AZURE_STORAGE_ACCOUNT} \
-        --name ${AZURE_STORAGE_CONTAINER} \
         --expiry ${TOKEN_EXPIRATION} \
         --permissions acdlpruw \
         --resource-types co \
         --services b \
         --https-only \
-        --as-user \
         --output tsv
 )
 
