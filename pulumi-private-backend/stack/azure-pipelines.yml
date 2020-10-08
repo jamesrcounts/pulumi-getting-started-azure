@@ -42,6 +42,7 @@ steps:
     displayName: 'Pulumi Run'
     env:
       AZURE_STORAGE_SAS_TOKEN: $(AZURE_STORAGE_TOKEN)
+      PULUMI_CONFIG_PASSPHRASE: $(PULUMI_CONFIG_PASSPHRASE)
     inputs:
       targetType: 'inline'
       script: |
