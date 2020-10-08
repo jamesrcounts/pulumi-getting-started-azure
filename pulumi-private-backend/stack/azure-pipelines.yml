@@ -38,14 +38,16 @@ steps:
       scriptPath: '$(working-directory)/scripts/generate-storage-keys.sh'
       failOnStandardError: true
 
-  - task: Bash@3
+  - task: AzureCLI@2
     displayName: 'Pulumi Run'
     env:
       AZURE_STORAGE_SAS_TOKEN: $(AZURE_STORAGE_TOKEN)
       PULUMI_CONFIG_PASSPHRASE: $(PULUMI_CONFIG_PASSPHRASE)
     inputs:
-      targetType: 'inline'
-      script: |
+      azureSubscription: 'Azure - Personal'
+      scriptType: 'bash'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
         set -e -x
         
         # Download and install pulumi
@@ -57,9 +59,32 @@ steps:
         pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} 
         
         pulumi stack select $(stack-name)
-        pulumi preview --diff --refresh --non-interactive 
-      failOnStderr: false
+        pulumi preview --diff --refresh --non-interactive
+      addSpnToEnvironment: true
       workingDirectory: '$(working-directory)'
+
+#   - task: Bash@3
+#     displayName: 'Pulumi Run'
+#     env:
+#       AZURE_STORAGE_SAS_TOKEN: $(AZURE_STORAGE_TOKEN)
+#       PULUMI_CONFIG_PASSPHRASE: $(PULUMI_CONFIG_PASSPHRASE)
+#     inputs:
+#       targetType: 'inline'
+#       script: |
+#         set -e -x
+        
+#         # Download and install pulumi
+#         curl -fsSL https://get.pulumi.com/ | bash 
+#         export PATH=$HOME/.pulumi/bin:$PATH
+        
+#         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT
+#         # environment variable.
+#         pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} 
+        
+#         pulumi stack select $(stack-name)
+#         pulumi preview --diff --refresh --non-interactive 
+#       failOnStderr: false
+#       workingDirectory: '$(working-directory)'
 
   # - task: Pulumi@1
   #   displayName: 'Preview Infrastructure Changes'
