@@ -68,32 +68,16 @@ steps:
         
         # Login into pulumi. This will require the AZURE_STORAGE_ACCOUNT
         # environment variable.
-        pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} 
-        
+        pulumi login -c azblob://${AZURE_STORAGE_CONTAINER}
         pulumi stack select $(stack-name)
-        pulumi preview --diff --refresh --non-interactive
+
+        COMMON_ARGS="--diff --refresh --non-interactive"
+        case ${BUILD_REASON} in
+          PullRequest)
+              pulumi preview ${COMMON_ARGS}
+            ;;
+          BuildCompletion|BatchedCI)
+              pulumi up --yes --skip-preview ${COMMON_ARGS}
+            ;;
+        esac
       workingDirectory: '$(working-directory)'
-
-  # - task: Pulumi@1
-  #   displayName: 'Preview Infrastructure Changes'
-  #   condition: and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true))))
-  #   env:
-  #     AZURE_STORAGE_SAS_TOKEN: '$(STORAGE_KEY)'
-  #   inputs:
-  #     azureSubscription: '$(azure-subscription)'
-  #     command: 'preview'
-  #     args: '--diff --refresh --non-interactive $(AZURE_STORAGE_SAS_TOKEN)'
-  #     cwd: '$(working-directory)'
-  #     stack: '$(stack-name)'
-  #     createStack: true
-
-  - task: Pulumi@1
-    displayName: 'Deploy Infrastructure Changes'
-    condition: and(succeeded(), or(or(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.Reason'], 'BatchedCI')),and(eq(variables['Build.Reason'], 'Manual'),eq(variables['manual-deploy'], true))))
-    inputs:
-      azureSubscription: '$(azure-subscription)'
-      command: 'up'
-      args: '--yes --diff --refresh --non-interactive --skip-preview'
-      cwd: '$(working-directory)'
-      stack: '$(stack-name)'
-      createStack: true
