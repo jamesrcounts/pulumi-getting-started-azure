@@ -46,5 +46,6 @@ Use an Azure Storage account to store the stack file instead of app.pulumi.com.
       4. There is a bug in the Pulumi task preventing it from consuming secrets.
       5. Switch to manual tasks.
          1. Must grant 'Storage Blob Data Contributor' to the service principal making the token.
+         2. Add environment setup script to add Azure SP enviornment variables to the Pulumi run.
 
 ## Interesting Take-aways
