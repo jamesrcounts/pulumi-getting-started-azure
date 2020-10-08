@@ -77,5 +77,8 @@ steps:
             pulumi preview ${COMMON_ARGS}
         elif [ "${BUILD_REASON}" = "IndividualCI" ] || [ "${BUILD_REASON}" = "BatchedCI" ] || { [ "${BUILD_REASON}" = "Manual" ] && [ "${MANUAL_DEPLOY}" = "true" ]; }; then
             pulumi up --yes --skip-preview ${COMMON_ARGS}
+        else
+            echo "##vso[task.logissue type=error]No run conditions matched."
+            exit 1
         fi
       workingDirectory: '$(working-directory)'
