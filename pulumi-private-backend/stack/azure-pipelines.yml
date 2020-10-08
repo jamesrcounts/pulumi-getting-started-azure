@@ -41,7 +41,7 @@ steps:
   - task: Bash@3
     displayName: 'Pulumi Run'
     env:
-      AZURE_STORAGE_SAS_TOKEN: $(STORAGE_KEY)
+      AZURE_STORAGE_SAS_TOKEN: $(AZURE_STORAGE_TOKEN)
     inputs:
       targetType: 'inline'
       script: |
