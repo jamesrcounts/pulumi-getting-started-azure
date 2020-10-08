@@ -53,6 +53,10 @@ steps:
     env:
       AZURE_STORAGE_SAS_TOKEN: $(AZURE_STORAGE_TOKEN)
       PULUMI_CONFIG_PASSPHRASE: $(PULUMI_CONFIG_PASSPHRASE)
+      ARM_CLIENT_ID: $(AZURE_CLIENT_ID)
+      ARM_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
+      ARM_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
+      ARM_TENANT_ID: $(AZURE_TENANT_ID)
     inputs:
       azureSubscription: 'Azure - Personal'
       scriptType: 'bash'
