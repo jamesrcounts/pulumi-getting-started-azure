@@ -45,5 +45,6 @@ Use an Azure Storage account to store the stack file instead of app.pulumi.com.
       3. Update the preview task to consume the SAS token secret with the name AZURE_STORAGE_SAS_TOKEN.
       4. There is a bug in the Pulumi task preventing it from consuming secrets.
       5. Switch to manual tasks.
+         1. Must grant 'Storage Blob Data Contributor' to the service principal making the token.
 
 ## Interesting Take-aways

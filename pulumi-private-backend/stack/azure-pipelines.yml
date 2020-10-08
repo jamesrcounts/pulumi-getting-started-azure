@@ -56,20 +56,21 @@ steps:
         pulumi login -c azblob://${AZURE_STORAGE_CONTAINER} 
 
         pulumi stack select $(stack-name)
+        pulumi preview --diff --refresh --non-interactive 
       failOnStderr: false
 
-  - task: Pulumi@1
-    displayName: 'Preview Infrastructure Changes'
-    condition: and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true))))
-    env:
-      AZURE_STORAGE_SAS_TOKEN: '$(STORAGE_KEY)'
-    inputs:
-      azureSubscription: '$(azure-subscription)'
-      command: 'preview'
-      args: '--diff --refresh --non-interactive $(AZURE_STORAGE_SAS_TOKEN)'
-      cwd: '$(working-directory)'
-      stack: '$(stack-name)'
-      createStack: true
+  # - task: Pulumi@1
+  #   displayName: 'Preview Infrastructure Changes'
+  #   condition: and(succeeded(), or(eq(variables['Build.Reason'], 'PullRequest'), and(eq(variables['Build.Reason'], 'Manual'), ne(variables['manual-deploy'], true))))
+  #   env:
+  #     AZURE_STORAGE_SAS_TOKEN: '$(STORAGE_KEY)'
+  #   inputs:
+  #     azureSubscription: '$(azure-subscription)'
+  #     command: 'preview'
+  #     args: '--diff --refresh --non-interactive $(AZURE_STORAGE_SAS_TOKEN)'
+  #     cwd: '$(working-directory)'
+  #     stack: '$(stack-name)'
+  #     createStack: true
 
   - task: Pulumi@1
     displayName: 'Deploy Infrastructure Changes'
